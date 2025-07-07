@@ -6,8 +6,9 @@
   "scripts": {
     "start": "npx http-server . -p 3000 -o",
     "dev": "npx live-server --port=3000 --open=/",
-    "build": "echo 'Build completed - static site ready for deployment'",
-    "deploy": "echo 'Deploy to your preferred hosting service'"
+    "build": "echo 'Build completed - static site ready for deployment' && cp index.html index.html.bak",
+    "deploy": "echo 'Deploy to GitHub Pages via GitHub Actions'",
+    "test": "echo 'No tests specified'"
   },
   "keywords": [
     "web-api",

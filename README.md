@@ -1,6 +1,15 @@
 # Web API Deep Research Tool
 
+[![Deploy to GitHub Pages](https://github.com/tonynash/WebApiDeepResearchWebsite/workflows/Deploy%20to%20GitHub%20Pages/badge.svg)](https://github.com/tonynash/WebApiDeepResearchWebsite/actions)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-GitHub%20Pages-blue)](https://tonynash.github.io/WebApiDeepResearchWebsite/)
+
 A comprehensive, production-ready website that performs 8-step deep analysis of Web APIs, providing insights from MDN documentation, browser compatibility, GitHub issues, Chromium bugs, and future predictions.
+
+## 🚀 Live Demo
+
+**Live Website**: [https://tonynash.github.io/WebApiDeepResearchWebsite/](https://tonynash.github.io/WebApiDeepResearchWebsite/)
+
+The website is automatically deployed to GitHub Pages on every push to the main branch.
 
 ## Features
 
@@ -108,10 +117,11 @@ This website is ready for deployment to any static hosting service:
 4. Output directory: `./`
 
 #### GitHub Pages
-1. Push to GitHub repository
+1. Push to GitHub repository: `https://github.com/tonynash/WebApiDeepResearchWebsite.git`
 2. Enable GitHub Pages in repository settings
-3. Select source branch (main/master)
-4. Site will be available at `https://username.github.io/repository-name`
+3. Select source: "GitHub Actions"
+4. Site will be available at: `https://tonynash.github.io/WebApiDeepResearchWebsite/`
+5. Automatic deployment on every push to main branch
 
 #### Cloudflare Pages
 1. Connect repository to Cloudflare Pages
