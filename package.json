@@ -1,0 +1,38 @@
+{
+  "name": "web-api-deep-research-website",
+  "version": "1.0.0",
+  "description": "A comprehensive Web API research tool that provides 8-step analysis of any Web API",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx http-server . -p 3000 -o",
+    "dev": "npx live-server --port=3000 --open=/",
+    "build": "echo 'Build completed - static site ready for deployment'",
+    "deploy": "echo 'Deploy to your preferred hosting service'"
+  },
+  "keywords": [
+    "web-api",
+    "research",
+    "mdn",
+    "browser-compatibility",
+    "chromium",
+    "github",
+    "web-development"
+  ],
+  "author": "Web API Research Tool",
+  "license": "MIT",
+  "devDependencies": {
+    "http-server": "^14.1.1",
+    "live-server": "^1.2.2"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/web-api-deep-research-website.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-username/web-api-deep-research-website/issues"
+  },
+  "homepage": "https://your-username.github.io/web-api-deep-research-website"
+}

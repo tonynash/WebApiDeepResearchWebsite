@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Integration Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-result { margin: 10px 0; padding: 10px; border-radius: 5px; }
+        .success { background: #d4edda; border: 1px solid #c3e6cb; color: #155724; }
+        .error { background: #f8d7da; border: 1px solid #f5c6cb; color: #721c24; }
+        .info { background: #d1ecf1; border: 1px solid #bee5eb; color: #0c5460; }
+        pre { background: #f8f9fa; padding: 10px; border-radius: 3px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <h1>Web API Research Tool - API Integration Test</h1>
+    <button onclick="runTests()">Run API Tests</button>
+    <div id="results"></div>
+
+    <script src="api-manager.js"></script>
+    <script>
+        const apiManager = new APIManager();
+        const resultsDiv = document.getElementById('results');
+
+        async function runTests() {
+            resultsDiv.innerHTML = '<div class="test-result info">Running tests...</div>';
+            
+            const tests = [
+                testMDNSearch,
+                testMDNDocument,
+                testGitHubSearch,
+                testGitHubIssues
+            ];
+
+            for (const test of tests) {
+                try {
+                    await test();
+                } catch (error) {
+                    addResult(`Test failed: ${error.message}`, 'error');
+                }
+            }
+        }
+
+        async function testMDNSearch() {
+            addResult('Testing MDN Search API...', 'info');
+            try {
+                const url = 'https://developer.mozilla.org/api/v1/search?q=fetch+api&locale=en-US';
+                const data = await apiManager.makeRequest(url);
+                
+                if (data.documents && data.documents.length > 0) {
+                    const firstResult = data.documents[0];
+                    addResult(`✓ MDN Search: Found "${firstResult.title}" - ${firstResult.mdn_url}`, 'success');
+                    addResult(`<pre>${JSON.stringify(firstResult, null, 2)}</pre>`, 'info');
+                } else {
+                    addResult('✗ MDN Search: No results found', 'error');
+                }
+            } catch (error) {
+                addResult(`✗ MDN Search failed: ${error.message}`, 'error');
+            }
+        }
+
+        async function testMDNDocument() {
+            addResult('Testing MDN Document API...', 'info');
+            try {
+                const url = 'https://developer.mozilla.org/api/v1/document/en-US/docs/Web/API/Fetch_API';
+                const data = await apiManager.makeRequest(url);
+                
+                if (data.doc) {
+                    addResult(`✓ MDN Document: Retrieved "${data.doc.title}"`, 'success');
+                    addResult(`Summary: ${data.doc.summary?.substring(0, 200)}...`, 'info');
+                } else {
+                    addResult('✗ MDN Document: No document found', 'error');
+                }
+            } catch (error) {
+                addResult(`✗ MDN Document failed: ${error.message}`, 'error');
+            }
+        }
+
+        async function testGitHubSearch() {
+            addResult('Testing GitHub Repository Search...', 'info');
+            try {
+                const url = 'https://api.github.com/search/repositories?q=fetch+api+explainer&sort=stars&order=desc&per_page=2';
+                const data = await apiManager.makeRequest(url, {
+                    headers: {
+                        'Accept': 'application/vnd.github.v3+json',
+                        'User-Agent': 'WebAPI-Research-Tool'
+                    }
+                });
+                
+                if (data.items && data.items.length > 0) {
+                    addResult(`✓ GitHub Repos: Found ${data.items.length} repositories`, 'success');
+                    data.items.forEach(repo => {
+                        addResult(`- ${repo.full_name}: ${repo.description || 'No description'}`, 'info');
+                    });
+                } else {
+                    addResult('✗ GitHub Repos: No repositories found', 'error');
+                }
+            } catch (error) {
+                addResult(`✗ GitHub Repos failed: ${error.message}`, 'error');
+            }
+        }
+
+        async function testGitHubIssues() {
+            addResult('Testing GitHub Issues Search...', 'info');
+            try {
+                const url = 'https://api.github.com/search/issues?q=fetch+api+state:open+is:issue&sort=created&order=desc&per_page=3';
+                const data = await apiManager.makeRequest(url, {
+                    headers: {
+                        'Accept': 'application/vnd.github.v3+json',
+                        'User-Agent': 'WebAPI-Research-Tool'
+                    }
+                });
+                
+                if (data.items && data.items.length > 0) {
+                    addResult(`✓ GitHub Issues: Found ${data.total_count} total issues, showing ${data.items.length}`, 'success');
+                    data.items.forEach(issue => {
+                        addResult(`- #${issue.number}: ${issue.title} (${issue.repository_url.split('/').slice(-2).join('/')})`, 'info');
+                    });
+                } else {
+                    addResult('✗ GitHub Issues: No issues found', 'error');
+                }
+            } catch (error) {
+                addResult(`✗ GitHub Issues failed: ${error.message}`, 'error');
+            }
+        }
+
+        function addResult(message, type) {
+            const div = document.createElement('div');
+            div.className = `test-result ${type}`;
+            div.innerHTML = message;
+            resultsDiv.appendChild(div);
+        }
+    </script>
+</body>
+</html>
